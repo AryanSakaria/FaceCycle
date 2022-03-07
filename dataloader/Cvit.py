@@ -39,15 +39,18 @@ class myImageloader(data.Dataset):
 		# if it isn't specified, default is for all
 
 		frames_dict = {}
-		# print("in obj")
 		frames_path = os.path.join(datapath, 'frames')
 		dataset_names = os.listdir(frames_path)
 
 		for dataset in dataset_names:
 			dataset_path = os.path.join(frames_path, dataset)
 			frames_dict[dataset] = os.listdir(dataset_path)
+			frames_dict[dataset].sort()
 
-		# print(frames_dict)
+		# for i in frames_dict:
+		# 	for j in frames_dict[i]:
+		# 		print(i, j)
+
 		self.frames_dict = frames_dict
 		self.frames_path = frames_path
 		#Creating a list for get_item
@@ -59,36 +62,18 @@ class myImageloader(data.Dataset):
 		# list[l:r]
 
 		self.dataset_count = {}
-
+		count = 0 
 		if video_list is None:
-			count = 0
-			for i in frames_dict.keys():
-				self.dataset_count[i] = [count]
-				for j in frames_dict[i]:
-					self.all_data_list.append((i, j))
-					count += 1
-				self.dataset_count[i].append(count)
+			video_list = ['1','2','8','9']
 
-		else:
-			count = 0
-			for vid in video_list:
-				self.dataset_count[vid] = [count]
-				for j in frames_dict[vid]:
-					self.all_data_list.append((vid, j))
-					count += 1
-				self.dataset_count[vid].append(count)
-
-		# print(self.all_data_list)
-		# print(self.dataset_count)
-
-		# self.alldatalist = []
-		# fp = open (datapath,"r")
-		# for line in fp.readlines():
-		#     line = line.strip()
-		#     #print(line)
-		#     self.alldatalist.append(line)
-		# fp.close()
-		# #print(len(self.alldatalist))
+		for vid in video_list:
+			self.dataset_count[vid] = [count]
+			for j in frames_dict[vid]:
+				self.all_data_list.append((vid, j))
+				# print((vid, j), count)
+				count += 1
+			self.dataset_count[vid].append(count)
+		
 
 		self.loader = loader
 
@@ -97,9 +82,10 @@ class myImageloader(data.Dataset):
 	def __getitem__(self, index):
 		(vid, img) = self.all_data_list[index]
 		idx_l, idx_r = self.dataset_count[vid]
-		idx_img_2 = np.random.randint(idx_l, idx_r-1)
+		idx_img_2 = np.random.randint(idx_l, idx_r)
+
 		while idx_img_2 == index:
-			idx_img_2 = np.random.randint(idx_l, idx_r-1)
+			idx_img_2 = np.random.randint(idx_l, idx_r)
 
 		img1_path = os.path.join(self.frames_path, vid,img)
 		# print(img1_path, os.path.isfile(img1_path))
@@ -150,7 +136,7 @@ class myImageloader(data.Dataset):
 		# 	processed2 = preprocess.get_transform(augment=True)              
 		# 	img2 = processed2(img2)
 			 
-		return img1, img2
+		# return img1, img2
 
 
 	def __len__(self):
