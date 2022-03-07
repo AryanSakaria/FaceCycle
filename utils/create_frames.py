@@ -2,7 +2,7 @@ import cv2
 import time
 import os
 
-def video_to_frames(input_loc, output_loc, interval = 10):
+def video_to_frames(input_loc, output_loc, interval = 5):
     """Function to extract frames from input video file
     and save them as separate frames in an output directory.
     Args:
