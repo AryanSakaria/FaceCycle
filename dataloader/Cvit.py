@@ -91,6 +91,7 @@ class myImageloader(data.Dataset):
 		img1_path = os.path.join(self.frames_path, vid,img)
 		# print(img1_path, os.path.isfile(img1_path))
 		img1 = self.loader(img1_path)
+		print(img1_path, os.path.isfile(img1_path))
 		processed1 = preprocess.get_transform(augment=True)
 		img1 = processed1(img1)
 
@@ -100,6 +101,7 @@ class myImageloader(data.Dataset):
 			# print("in second one")
 			(vid_2, img_2) = self.all_data_list[idx_img_2]
 			img2_path = os.path.join(self.frames_path, vid_2, img_2)
+			print("img2", img2_path, os.path.isfile(img2_path))
 			img2 = self.loader(img2_path)
 			# print(img2_path, os.path.isfile(img2_path))
 			processed2 = preprocess.get_transform(augment=True)
