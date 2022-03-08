@@ -273,17 +273,17 @@ if __name__ == '__main__':
         prefetcher = data_prefetcher(TrainImgLoader)
 
         input0, input1 = prefetcher.next()
-        
+        print(input0.shape, input1.shape)
         batch_idx = 0
-#         while input0 is not None:    
-#             input0, input1 = input0.cuda(), input1.cuda()
+        # while input0 is not None:    
+        #     input0, input1 = input0.cuda(), input1.cuda()
 
-#             codegeneration.train()
-#             exptoflow.train()
-#             Swap_Generator.train()
-#             forwardloss(input0, input1, batch_idx) 
-#             batch_idx += 1 
-#             input0, input1 = prefetcher.next()
+        #     codegeneration.train()
+        #     exptoflow.train()
+        #     Swap_Generator.train()
+        #     forwardloss(input0, input1, batch_idx) 
+        #     batch_idx += 1 
+            input0, input1 = prefetcher.next()
               
 #         #SAVE
 #         if not os.path.isdir(args.savemodel):
