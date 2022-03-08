@@ -113,6 +113,7 @@ TrainImgLoader = torch.utils.data.DataLoader(
          CV.myImageloader(datapath = args.datapath, video_list=['1','2','8','9']), 
          batch_size= 4, shuffle= True, pin_memory=True, collate_fn=fast_collate, num_workers= 4, drop_last=True)
 
+print("got dataloader")
 
 def denorm(x):
 	x[:,0,:,:] = x[:,0,:,:]*0.229 + 0.485
@@ -139,7 +140,7 @@ feat_layers = ['r21','r31','r41']
 codegeneration =  codegeneration().cuda()
 exptoflow =  exptoflow().cuda()
 Swap_Generator = generator().cuda()
-
+# print("checkpoint2")
 if args.loadmodel is not None:
     print("args load model True")
     print(os.path.isfile(args.loadmodel))
@@ -275,22 +276,22 @@ if __name__ == '__main__':
         input0, input1 = prefetcher.next()
         print(input0.shape, input1.shape)
         batch_idx = 0
-#         while input0 is not None:    
-#             input0, input1 = input0.cuda(), input1.cuda()
+        while input0 is not None:    
+            input0, input1 = input0.cuda(), input1.cuda()
 
-#             codegeneration.train()
-#             exptoflow.train()
-#             Swap_Generator.train()
-#             forwardloss(input0, input1, batch_idx) 
-#             batch_idx += 1 
-#             input0, input1 = prefetcher.next()
+            codegeneration.train()
+            exptoflow.train()
+            Swap_Generator.train()
+            forwardloss(input0, input1, batch_idx) 
+            batch_idx += 1 
+            input0, input1 = prefetcher.next()
               
-#         #SAVE
-#         if not os.path.isdir(args.savemodel):
-#             os.makedirs(args.savemodel)
-#         # model.module.state_dict() for nn.dataparallel    
-#         savefilename = args.savemodel + 'ExpCode_'+str(epoch)+'.tar'
-#         torch.save({'codegeneration':codegeneration.state_dict(),
-#                     'exptoflow':exptoflow.state_dict(),
-#                     'Swap_Generator':Swap_Generator.state_dict(),              
-#         }, savefilename)
+        #SAVE
+        if not os.path.isdir(args.savemodel):
+            os.makedirs(args.savemodel)
+        # model.module.state_dict() for nn.dataparallel    
+        savefilename = args.savemodel + 'ExpCode_'+str(epoch)+'.tar'
+        torch.save({'codegeneration':codegeneration.state_dict(),
+                    'exptoflow':exptoflow.state_dict(),
+                    'Swap_Generator':Swap_Generator.state_dict(),              
+        }, savefilename)
