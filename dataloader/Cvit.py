@@ -35,6 +35,7 @@ def default_loader(path):
 
 class myImageloader(data.Dataset):
 	def __init__(self, datapath='./custom_data', loader=default_loader, video_list = None):
+		print("reading the dataloader")
 		# video list makes the data list for only those videos to be included
 		# if it isn't specified, default is for all
 
